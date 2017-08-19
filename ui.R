@@ -27,7 +27,9 @@ dashboardPage(
             # Default chart visualizing the overall performance of the systems
             tabPanel("All Systems Plot", plotOutput('plot1')),
             # table and graph visualizing statistical performance and time-series graph
-            tabPanel("Basic Statistics and Graph", tableOutput('statistics'), plotOutput("plot2"))
+            tabPanel("Basic Statistics and Graph", 
+                     checkboxInput(inputId = "StatErr", label = "Add Statistical Smoother?", value = FALSE, width = NULL),
+                     tableOutput('statistics'), plotOutput("plot2"))
           )  
       )
   )

@@ -19,7 +19,7 @@ Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - T
                         stringsAsFactors = F)
 
 shinyServer(function(input, output, session) {
-
+  
   # have a reactive value of terminal number selected
   file_path <- reactive({ file_path <- paste(Terminals[input$TermNum, 2], "/", "OrdersResultsT", input$TermNum,".csv", sep = "") })
   #file_path <- paste(Terminals[1, 2], "/", "OrdersResultsT", 1,".csv", sep = "")
@@ -81,9 +81,12 @@ shinyServer(function(input, output, session) {
     DF$X4 <- ymd_hms(DF$X4)
     DF %>%
       filter(X1 == system_analysed()) %>%
-      
+      # bring the plot...
       ggplot(aes(x = X4, y = X5, col = as.factor(X7), shape = as.factor(X6))) + geom_point()+ 
-      geom_hline(yintercept=0, linetype="dashed", color = "red")+geom_smooth()
+      # this is just a line separating profit and loss :)
+      geom_hline(yintercept=0, linetype="dashed", color = "red")+
+      # adding a simple line summarising points, user can select if apply stat.error filter
+      geom_smooth(method = "lm", se = input$StatErr)
     
   })
   

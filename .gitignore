@@ -24,3 +24,5 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 trademonitor.Rproj
+CourseScript.nb.html
+CourseScript.Rmd

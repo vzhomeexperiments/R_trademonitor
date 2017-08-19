@@ -11,7 +11,7 @@ dashboardPage(
   dashboardHeader(title = "fxtrams"),
   dashboardSidebar(
       # Elements on the Sidebar of the App
-      selectInput(inputId = "TermNum", label = "Select Terminal Number",choices = 1:4),
+      selectInput(inputId = "TermNum", label = "Select Terminal Number",choices = 1:5),
       actionButton(inputId = "Refresh", label = "refresh"),
       selectInput(inputId = "MagicNum", label = "Select Magic Number", choices = 1:10),
       sliderInput(inputId = "filter", label = "Select Profit Levels", min = -10000, max = 10000, value = c(0, 10000)),

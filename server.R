@@ -81,9 +81,11 @@ shinyServer(function(input, output, session) {
     DF$X4 <- ymd_hms(DF$X4)
     DF %>%
       filter(X1 == system_analysed()) %>%
-      
+      # bring the plot...
       ggplot(aes(x = X4, y = X5, col = as.factor(X7), shape = as.factor(X6))) + geom_point()+ 
+      # this is just a line separating profit and loss :)
       geom_hline(yintercept=0, linetype="dashed", color = "red")+
+      # adding a simple line summarising points, user can select if apply stat.error filter
       geom_smooth(method = "lm", se = input$StatErr)
     
   })

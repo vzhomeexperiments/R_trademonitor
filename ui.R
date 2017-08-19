@@ -12,7 +12,7 @@ dashboardPage(
   dashboardSidebar(
       # Elements on the Sidebar of the App
       selectInput(inputId = "TermNum", label = "Select Terminal Number",choices = 1:5),
-      actionButton(inputId = "Refresh", label = "refresh"),
+      actionButton(inputId = "Refresh", label = "Refresh"),
       selectInput(inputId = "MagicNum", label = "Select Magic Number", choices = 1:10),
       sliderInput(inputId = "filter", label = "Select Profit Levels", min = -10000, max = 10000, value = c(0, 10000)),
       dateInput(inputId = "filterDate", label = "Select Orders newer than...", value = "2017-02-01"),

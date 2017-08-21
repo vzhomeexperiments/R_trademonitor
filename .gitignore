@@ -24,3 +24,5 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 trademonitor.Rproj
+NotesSecretPackage.nb.html
+NotesSecretPackage.Rmd

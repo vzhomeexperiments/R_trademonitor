@@ -24,13 +24,18 @@ openssl::read_pubkey(pub_key_dir)
 # adding user to the vault myVault1
 add_user("vzhomeexperiments", public_key = pub_key_dir, vault = "tormos")
 add_github_user("vzhomeexperiments", vault = "tormos")
+add_github_user("vladdsm", vault = "tormos")
+
 
 # generating fake secret
 fakepassword <- "MyFakePassword334455"
 
-# add secret to the vault myVault1, share it for both users
+# add secret to the vault myVault1, share it for both users / also added new user from git and his key
 add_secret(name = "TheFakeSecret", value = fakepassword, users = c("vzhomeexperiments",
-                                                                    "github-vzhomeexperiments"), vault = "tormos")
+                                                                    "github-vzhomeexperiments", 
+                                                                    "github-vladdsm"), vault = "tormos")
 
+# this will 
+update_secret(name = "TheFakeSecret", key = local_key(), value = fakepassword, vault = "tormos")
 # get that secret usign the private key /user having private key/
 secret_retrieved <- get_secret(name = "TheFakeSecret", key = prv_key_dir, vault = "tormos")

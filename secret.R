@@ -35,6 +35,10 @@ add_secret(name = "TheFakeSecret", value = fakepassword, users = c("vzhomeexperi
                                                                     "github-vzhomeexperiments", 
                                                                     "github-vladdsm"), vault = "tormos")
 
+add_secret(name = "TheFakeSecret1", value = fakepassword, users = c("vzhomeexperiments",
+                                                                   "github-vzhomeexperiments", 
+                                                                   "github-vladdsm"), vault = "tormos")
+
 # this will 
 update_secret(name = "TheFakeSecret", key = local_key(), value = fakepassword, vault = "tormos")
 # get that secret usign the private key /user having private key/

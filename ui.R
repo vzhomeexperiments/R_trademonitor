@@ -16,7 +16,7 @@ dashboardPage(
       selectInput(inputId = "MagicNum", label = "Select Magic Number", choices = 1:10),
       sliderInput(inputId = "filter", label = "Select Profit Levels", min = -10000, max = 10000, value = c(0, 10000)),
       dateInput(inputId = "filterDate", label = "Select Orders newer than...", value = "2017-02-01"),
-      sliderInput(inputId = "nTrades", label = "Select Orders number greater than...", value = c(0, 100),min = 0, max = 100)
+      sliderInput(inputId = "nTrades", label = "Select Orders number greater than...", value = c(0, 1000),min = 0, max = 1000)
   ),
   dashboardBody(
         

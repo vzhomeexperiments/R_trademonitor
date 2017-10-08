@@ -22,23 +22,25 @@ shinyServer(function(input, output, session) {
   
   # have a reactive value of terminal number selected
   file_path <- reactive({ file_path <- paste(Terminals[input$TermNum, 2], "/", "OrdersResultsT", input$TermNum,".csv", sep = "") })
-  #file_path <- paste(Terminals[1, 2], "/", "OrdersResultsT", 1,".csv", sep = "")
+  #Debugging: file_path <- paste(Terminals[1, 2], "/", "OrdersResultsT", 1,".csv", sep = "")
+  
   # have a reactive value of the magic system selected
   system_analysed <- reactive({ system_analysed <- input$MagicNum })
   
   # cleaning data and creating relevant statistics
   DF_Stats <- reactive({ 
-    DF_Stats <- read_csv(file = file_path(), col_names = F)
-    #DF_Stats <- read_csv(file = file_path, col_names = F)
-    DF_Stats$X3 <- ymd_hms(DF_Stats$X3)
-  DF_Stats$X4 <- ymd_hms(DF_Stats$X4)
-  DF_Stats <- DF_Stats %>%
-    filter(X3 > as.POSIXct(input$filterDate)) %>% 
-    group_by(X1) %>%
-    summarise(PnL = sum(X5),
-              NumTrades = n()) %>% 
-    filter(NumTrades > input$nTrades[1], NumTrades < input$nTrades) %>% 
-    filter(PnL > input$filter[1], PnL < input$filter[2])   })
+                        DF_Stats <- read_csv(file = file_path(), col_names = F)
+                        #DF_Stats <- read_csv(file = file_path, col_names = F)
+                        DF_Stats$X3 <- ymd_hms(DF_Stats$X3)
+                        DF_Stats$X4 <- ymd_hms(DF_Stats$X4)
+                        DF_Stats <- DF_Stats %>%
+                        filter(X3 > as.POSIXct(input$filterDate)) %>% 
+                        group_by(X1) %>%
+                        summarise(PnL = sum(X5),
+                                  NumTrades = n()) %>% 
+                        filter(NumTrades > input$nTrades[1], NumTrades < input$nTrades) %>% 
+                        filter(PnL > input$filter[1], PnL < input$filter[2])   
+                      })
   
   # import the summary statistics on the beginning of the app, call the statistics on refresh button call
   observeEvent(input$Refresh, {

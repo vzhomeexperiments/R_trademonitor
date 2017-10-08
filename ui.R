@@ -14,8 +14,8 @@ dashboardPage(
       selectInput(inputId = "TermNum", label = "Select Terminal Number",choices = 1:5),
       actionButton(inputId = "Refresh", label = "Refresh"),
       selectInput(inputId = "MagicNum", label = "Select Magic Number", choices = 1:10),
-      sliderInput(inputId = "filter", label = "Select Profit Levels", min = -10000, max = 10000, value = c(0, 10000)),
-      dateInput(inputId = "filterDate", label = "Select Orders newer than...", value = "2017-02-01"),
+      sliderInput(inputId = "filter", label = "Select Profit Levels", min = -10000, max = 10000, value = c(-500, 10000)),
+      dateInput(inputId = "filterDate", label = "Select Orders newer than...", value = Sys.Date()-30),
       sliderInput(inputId = "nTrades", label = "Select Orders number greater than...", value = c(0, 1000),min = 0, max = 1000)
   ),
   dashboardBody(
@@ -24,9 +24,10 @@ dashboardPage(
         # Elements of the Dashboard: header and tabset panel
         headerPanel("Trading Systems Graphical performance overview"),
           tabsetPanel(
-            # Default chart visualizing the overall performance of the systems
-            tabPanel("All Systems Plot", plotOutput('plot1')),
-            # table and graph visualizing statistical performance and time-series graph
+            # Default chart and statistics summary visualizing the overall performance of the systems
+            tabPanel("All Systems Plot", tableOutput('summary'),
+                     plotOutput('plot1')),
+            # table and graph visualizing statistical performance and time-series graph of single system
             tabPanel("Basic Statistics and Graph", 
                      checkboxInput(inputId = "StatErr", label = "Add Statistical Smoother?", value = FALSE, width = NULL),
                      tableOutput('statistics'), plotOutput("plot2"))

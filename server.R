@@ -57,6 +57,24 @@ shinyServer(function(input, output, session) {
                         filter(PnL > input$filter[1], PnL < input$filter[2])   
                       })
   
+  #---------------------
+  # make summary statistics of all systems PnL
+  DF_Stats_PnL <- reactive({ 
+    DF_Stats_PnL <- read_csv(file = file_path(), col_names = F)
+    #DF_Stats_PnL <- read_csv(file = file_path, col_names = F)
+    DF_Stats_PnL$X3 <- ymd_hms(DF_Stats_PnL$X3)
+    DF_Stats_PnL$X4 <- ymd_hms(DF_Stats_PnL$X4)
+    DF_Stats_PnL <- DF_Stats_PnL %>%
+      filter(X3 > as.POSIXct(input$filterDate)) %>% 
+      group_by(X1) %>%
+      summarise(PnL = sum(X5),
+                NumTrades = n()) %>% 
+      arrange(X1) %>% 
+      filter(NumTrades > input$nTrades[1], NumTrades < input$nTrades[2]) %>% 
+      filter(PnL > input$filter[1], PnL < input$filter[2]) %>% 
+      summarise(TotPnL = sum(PnL),
+                NumTrades = sum(NumTrades))
+  })
   #=============================================================
   #========= REACTIVE EVENTS ===================================
   #=============================================================  
@@ -86,7 +104,8 @@ shinyServer(function(input, output, session) {
       ggplot(aes(x = PnL, y = as.factor(X1), size = NumTrades)) + geom_point()+ 
       ggtitle(label = "Plot indicating which systems are profitable", 
               subtitle = "Size of the point represent number of trades completed") +
-      geom_vline(xintercept=0, linetype="dashed", color = "green")
+      geom_vline(xintercept=0, linetype="dashed", color = "green") +
+      geom_vline(xintercept = DF_Stats_PnL()$TotPnL, color = "red")
 
     })
   
@@ -99,6 +118,9 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # -------------------------------------------
+  # table with statistic of the system, Sum PnL and N trades
+  output$summary <- renderTable({   DF_Stats_PnL()  })
   
   # -------------------------------------------
   # generating plot 2 statistics of the system

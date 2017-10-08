@@ -38,6 +38,7 @@ shinyServer(function(input, output, session) {
                         group_by(X1) %>%
                         summarise(PnL = sum(X5),
                                   NumTrades = n()) %>% 
+                          arrange(X1) %>% 
                         filter(NumTrades > input$nTrades[1], NumTrades < input$nTrades) %>% 
                         filter(PnL > input$filter[1], PnL < input$filter[2])   
                       })

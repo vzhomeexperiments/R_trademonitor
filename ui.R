@@ -5,7 +5,7 @@
 
 # ui.R
 library(shinydashboard)
-library(shiny)
+
 # 
 dashboardPage(
   dashboardHeader(title = "fxtrams"),

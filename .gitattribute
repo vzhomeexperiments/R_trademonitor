@@ -1,0 +1,2 @@
+# tell GitHub’s linguist which files to ignore
+.NotesSecretPackage.nb.html

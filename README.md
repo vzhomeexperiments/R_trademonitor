@@ -11,3 +11,7 @@ is to have easy to use system allowing to have a clear view of what is happening
 Profitable trading system should have high number of trades and winning strategy capturing market ineffeciency.
 In order to be able to develop such a system and operate it one needs to monitor, adjust, develop, control many things...
 To help with that it's necessary to monitor performance of the systems
+
+# learn how to apply this repository
+
+https://www.udemy.com/draft/1482376/?couponCode=LAZYTRADE3-20

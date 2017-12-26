@@ -5,10 +5,10 @@
 #
 
 library(shinydashboard)
-library(readr)
-library(dplyr)
+library(tidyverse)
 library(lubridate)
-library(ggplot2)
+library(readxl)
+
 
 #=============================================================
 #========= FUNCTIONS AND VARIABLES============================
@@ -22,6 +22,8 @@ Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - T
                                                "C:/Program Files (x86)/FxPro - Terminal4/MQL4/Files",
                                                "C:/Program Files (x86)/FxPro - Terminal5/MQL4/Files"),
                         stringsAsFactors = F)
+
+Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
 
 # ============================================================
 
@@ -75,6 +77,11 @@ shinyServer(function(input, output, session) {
       summarise(TotPnL = sum(PnL),
                 NumTrades = sum(NumTrades))
   })
+  
+  #---------------------
+  # make strategy table (to derive it from magic number TDL)
+  Strategy <- reactive({ Strategies })
+  
   #=============================================================
   #========= REACTIVE EVENTS ===================================
   #=============================================================  
@@ -142,5 +149,8 @@ shinyServer(function(input, output, session) {
       geom_smooth(method = "lm", se = input$StatErr)
     
   })
+  
+  # generating strategy output
+  output$strategy_text <- renderTable({ Strategy() })
   
 })

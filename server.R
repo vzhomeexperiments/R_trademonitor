@@ -1,8 +1,8 @@
 
-# (C) 2017 Vladimir Zhbanko 
+# (C) 2018 Vladimir Zhbanko 
 # Shiny app to monitor statistics of the trading systems
-# Version 1
-#
+# Course Lazy Trading Part 3: Set up your automated Trading Journal
+
 
 library(shinydashboard)
 library(tidyverse)

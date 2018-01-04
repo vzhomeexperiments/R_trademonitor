@@ -1,14 +1,17 @@
 # Project to create easy to use Trading Journal adapted to personal use
 # Help to develop, demo-test Automated Trading Systems
 #
-# (C) 2017 Vladimir Zhbanko github: vzhomeexperiments/trademonitor
+# (C) 2018 Vladimir Zhbanko github: vzhomeexperiments/R_trademonitor
+# Course Lazy Trading Part 3: Set up your automated Trading Journal
+# Run this app from R-Studio or use this link:
+# https://stackoverflow.com/questions/18606665/run-web-applications-without-opening-r-studio
 
 # ui.R
 library(shinydashboard)
 
 # 
 dashboardPage(
-  dashboardHeader(title = "fxtrams"),
+  dashboardHeader(title = "Lazy Trading"),
   dashboardSidebar(
       # Elements on the Sidebar of the App
       selectInput(inputId = "TermNum", label = "Select Terminal Number",choices = 1:5),

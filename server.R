@@ -24,6 +24,7 @@ Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - T
                         stringsAsFactors = F)
 
 Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
+logs <- read_excel("Strategies.xlsx",sheet = 2,col_names = TRUE)
 
 # ============================================================
 

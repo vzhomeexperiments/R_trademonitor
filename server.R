@@ -24,6 +24,7 @@ Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - T
                         stringsAsFactors = F)
 
 Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
+Strategies$ID <- as.factor(Strategies$ID)
 logs <- read_excel("Strategies.xlsx",sheet = 2,col_names = TRUE)
 
 # ============================================================
@@ -42,6 +43,10 @@ shinyServer(function(input, output, session) {
   #---------------------
   # have a reactive value of the magic system selected
   system_analysed <- reactive({ system_analysed <- input$MagicNum })
+  
+  #---------------------
+  # have a reactive value of the strategy type
+  strategy_analysed <- reactive({ system_analysed() %>% substr(3,4) })
   
   #---------------------
   # cleaning data and creating relevant statistics
@@ -80,8 +85,8 @@ shinyServer(function(input, output, session) {
   })
   
   #---------------------
-  # make strategy table (to derive it from magic number TDL)
-  Strategy <- reactive({ Strategies })
+  # make strategy table (to derive it from magic number)
+  Strategy <- reactive({ Strategies %>% filter(ID == strategy_analysed()) })
   
   #=============================================================
   #========= REACTIVE EVENTS ===================================

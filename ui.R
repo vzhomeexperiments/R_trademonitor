@@ -8,6 +8,7 @@
 
 # ui.R
 library(shinydashboard)
+library(DT)
 
 # 
 dashboardPage(
@@ -45,7 +46,7 @@ dashboardPage(
                      
                      ),
             # datatable with records of thoughts... write persistently to excel file, records should be visualized by date
-            tabPanel("Log")
+            tabPanel("Log", DT::dataTableOutput("mytable"))
           )  
       )
   )

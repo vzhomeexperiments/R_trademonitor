@@ -8,7 +8,8 @@ library(shinydashboard)
 library(tidyverse)
 library(lubridate)
 library(readxl)
-
+library(DT)
+library(xlsx)
 
 #=============================================================
 #========= FUNCTIONS AND VARIABLES============================
@@ -39,7 +40,7 @@ names(prices) <- Pairs
 
 Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
 Strategies$ID <- as.factor(Strategies$ID)
-logs <- read_excel("Strategies.xlsx",sheet = 2,col_names = TRUE)
+logs <- read_excel("Strategies.xlsx",sheet = 2,col_names = TRUE, col_types = "text")
 
 # ============================================================
 
@@ -102,6 +103,16 @@ shinyServer(function(input, output, session) {
   # make strategy table (to derive it from magic number)
   Strategy <- reactive({ Strategies %>% filter(ID == strategy_analysed()) })
   
+  #---------------------
+  # store record as reactive value
+  DF <- reactive({ 
+    
+    DF <- data.frame(ID = "IDd",Date = as.character(Sys.Date()), Log = as.character(input$caption))
+    
+    })
+  
+  
+  
   #=============================================================
   #========= REACTIVE EVENTS ===================================
   #=============================================================  
@@ -117,6 +128,19 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, inputId = "MagicNum", label = NULL, choices = unique(DF_Stats()$X1), selected = NULL)
     
   })
+  
+  # add record to the log file and write that to the file back, delete content from the input text
+  observeEvent(input$subm_rec, {
+   
+    #add record to log object
+    
+    #write to excel file (append)
+    write.xlsx(DF(), file = "Strategies.xlsx", sheetName="Sheet2")
+    #eraze what was written
+    updateTextAreaInput(session, inputId = "caption", label = NULL, value = "")
+    
+  })
+  
   
 #=============================================================
 #========= OUTPUTS ===========================================
@@ -209,5 +233,11 @@ shinyServer(function(input, output, session) {
   
   # generating strategy output
   output$strategy_text <- renderTable({ Strategy() })
+  
+  
+  # writing logs of the records
+  output$mytable <- DT::renderDataTable({
+    DF()
+  })
   
 })

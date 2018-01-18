@@ -17,27 +17,35 @@ dashboardPage(
       selectInput(inputId = "TermNum", label = "Select Terminal Number",choices = 1:5),
       actionButton(inputId = "Refresh", label = "Refresh"),
       selectInput(inputId = "MagicNum", label = "Select Magic Number", choices = 1:10),
-      sliderInput(inputId = "filter", label = "Select Profit Levels", min = -10000, max = 10000, value = c(-500, 10000)),
+      sliderInput(inputId = "filter", label = "Select Profit Levels", min = -10000, max = 10000, value = c(-10000, 10000)),
       dateInput(inputId = "filterDate", label = "Select Orders newer than...", value = Sys.Date()-30),
       sliderInput(inputId = "nTrades", label = "Select Orders number greater than...", value = c(0, 1000),min = 0, max = 1000)
   ),
   dashboardBody(
         
       mainPanel(
+        
         # Elements of the Dashboard: header and tabset panel
         headerPanel("Trading Systems Graphical performance overview"),
-          tabsetPanel(
+        
+        tabsetPanel(
             # Default chart and statistics summary visualizing the overall performance of the systems
             tabPanel("All Systems Plot", tableOutput('summary'),
                      plotOutput('plot1')),
             # table and graph visualizing statistical performance and time-series graph of single system
             tabPanel("Basic Statistics and Graph", 
                      checkboxInput(inputId = "StatErr", label = "Add Statistical Smoother?", value = FALSE, width = NULL),
-                     tableOutput('statistics'), 
+                      fluidRow(column(3, tableOutput('statistics')),
+                               column(4, textAreaInput("caption", "Notes", "", width = '100%')),
+                               column(1, actionButton("subm_rec", label = "Go!", icon = icon("check")))),
+                                
                      tableOutput("strategy_text"),
                      plotOutput("plot2"),
-                     fluidRow()
-                     )
+                     plotOutput("plot3")
+                     
+                     ),
+            # datatable with records of thoughts... write persistently to excel file, records should be visualized by date
+            tabPanel("Log")
           )  
       )
   )

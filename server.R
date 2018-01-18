@@ -170,6 +170,43 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # # -------------------------------------------
+  # generating plot 3 price chart of pairs
+  output$plot3 <- renderPlot({
+    
+    DF <- read_csv(file = file_path(), col_names = F)
+    DF$X3 <- ymd_hms(DF$X3)
+    DF$X4 <- ymd_hms(DF$X4)
+    
+    # find the oldest trade done
+    DF1 <- DF %>% 
+      # only show one system
+      filter(X1 == system_analysed()) %>% 
+      select(X4) %>% arrange() %>% head(1)
+    FirstTrade <- DF1$X4
+    
+    # find the currency which is in trade
+    DF2 <- DF %>% 
+      # only show one system
+      filter(X1 == system_analysed()) %>% 
+      select(X6) %>% head(1)
+    Currency <- DF2$X6
+    
+    
+    DF_Date <- subset(prices, select = Date)
+    DF_Price <- subset(prices, select = Currency) %>% bind_cols(DF_Date)
+    
+    names(DF_Price) <- c("X1", "Date")
+    
+    DF_Price %>% filter(Date > as.POSIXct(FirstTrade)) %>%
+      select(Date, X1) %>% 
+      # plot
+      # bring the plot...
+      #plot()
+      ggplot(aes(Date, X1, col = "red")) + geom_line()
+    
+  })
+  
   # generating strategy output
   output$strategy_text <- renderTable({ Strategy() })
   

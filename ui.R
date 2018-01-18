@@ -33,7 +33,11 @@ dashboardPage(
             # table and graph visualizing statistical performance and time-series graph of single system
             tabPanel("Basic Statistics and Graph", 
                      checkboxInput(inputId = "StatErr", label = "Add Statistical Smoother?", value = FALSE, width = NULL),
-                     tableOutput('statistics'), plotOutput("plot2"),tableOutput("strategy_text"))
+                     tableOutput('statistics'), 
+                     tableOutput("strategy_text"),
+                     plotOutput("plot2"),
+                     fluidRow()
+                     )
           )  
       )
   )

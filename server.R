@@ -23,6 +23,20 @@ Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - T
                                                "C:/Program Files (x86)/FxPro - Terminal5/MQL4/Files"),
                         stringsAsFactors = F)
 
+# load prices of 28 currencies
+prices <- read_csv(file.path(Terminals[2,2], "AI_CP15.csv"), col_names = F)
+prices$X1 <- ymd_hms(prices$X1)
+
+# Vector of currency pairs
+Pairs = c("Date", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "USDJPY",
+          "EURGBP", "EURJPY", "EURCHF", "EURNZD", "EURCAD", "EURAUD", "GBPAUD",
+          "GBPCAD", "GBPCHF", "GBPJPY", "GBPNZD", "AUDCAD", "AUDCHF", "AUDJPY",
+          "AUDNZD", "CADJPY", "CHFJPY", "NZDJPY", "NZDCAD", "NZDCHF", "CADCHF")   
+
+# Rename the column?
+names(prices) <- Pairs
+
+
 Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
 Strategies$ID <- as.factor(Strategies$ID)
 logs <- read_excel("Strategies.xlsx",sheet = 2,col_names = TRUE)

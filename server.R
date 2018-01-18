@@ -37,22 +37,10 @@ Pairs = c("Date", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "U
 # Rename the column?
 names(prices) <- Pairs
 
-
 Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
 Strategies$ID <- as.factor(Strategies$ID)
 
-# function that write data to csv file of the temp_folder directory 
-saveDataLocal <- function(data, outputDir, fileName) {
-  # Create a simple file name
-  fileName <- paste(fileName, ".csv", sep = "")
-  # Write the file to the local system
-  write.csv(
-    x = data,
-    file = file.path(outputDir, fileName), 
-    row.names = FALSE, quote = FALSE, append = FALSE
-  )
-}
-
+# function that write data to csv file 
 storeData <- function(data, fileName) {
   
   # store only unique records
@@ -132,7 +120,7 @@ shinyServer(function(input, output, session) {
   # store record as reactive value
   DF <- reactive({ 
     
-    DF <- data.frame(ID = system_analysed(), Date = as.character(Sys.Date()), Log = as.character(input$caption))
+    DF <- data.frame(ID = strategy_analysed(), Date = as.character(Sys.Date()), Log = as.character(input$caption))
     
     })
   

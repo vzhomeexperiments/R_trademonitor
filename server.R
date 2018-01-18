@@ -40,7 +40,32 @@ names(prices) <- Pairs
 
 Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
 Strategies$ID <- as.factor(Strategies$ID)
-logs <- read_excel("Strategies.xlsx",sheet = 2,col_names = TRUE, col_types = "text")
+
+# function that write data to csv file of the temp_folder directory 
+saveDataLocal <- function(data, outputDir, fileName) {
+  # Create a simple file name
+  fileName <- paste(fileName, ".csv", sep = "")
+  # Write the file to the local system
+  write.csv(
+    x = data,
+    file = file.path(outputDir, fileName), 
+    row.names = FALSE, quote = FALSE, append = FALSE
+  )
+}
+
+storeData <- function(data, fileName) {
+  
+  # store only unique records
+  # non duplicates
+  nonDuplicate <- data[!duplicated(data), ]
+  # Write the file to the local system
+  write.csv(
+    x = nonDuplicate,
+    file = fileName, 
+    row.names = FALSE, quote = FALSE, append = TRUE, col.names = FALSE
+  )
+  
+}
 
 # ============================================================
 
@@ -107,7 +132,7 @@ shinyServer(function(input, output, session) {
   # store record as reactive value
   DF <- reactive({ 
     
-    DF <- data.frame(ID = "IDd",Date = as.character(Sys.Date()), Log = as.character(input$caption))
+    DF <- data.frame(ID = system_analysed(), Date = as.character(Sys.Date()), Log = as.character(input$caption))
     
     })
   
@@ -127,15 +152,33 @@ shinyServer(function(input, output, session) {
     # update the magic numbers selection
     updateSelectInput(session, inputId = "MagicNum", label = NULL, choices = unique(DF_Stats()$X1), selected = NULL)
     
+      #try to read from file responses.csv first for the information that is already available
+    DF <- try(read_csv(file = "responses.csv", col_types = "ccc"),silent = T)
+      
+      if (class(DF)[3] == "data.frame") {    # get data from file to the responses
+        responses <<- DF
+      }
   })
   
   # add record to the log file and write that to the file back, delete content from the input text
   observeEvent(input$subm_rec, {
    
     #add record to log object
+    # function that write data to global directory called "responses"
+    saveDataGlobal <- function(data) {
+      
+      if (exists("responses")) {    # get data from global environment is it's exist there
+        responses <<- rbind(responses, data)
+      } else {
+        responses <<- data                # <<- this saves to the global environment
+      }
+    }
     
-    #write to excel file (append)
-    write.xlsx(DF(), file = "Strategies.xlsx", sheetName="Sheet2")
+    # test run -- save data to global directory
+    saveDataGlobal(DF())
+    
+    #write to file (append)
+    storeData(responses, "responses.csv")
     #eraze what was written
     updateTextAreaInput(session, inputId = "caption", label = NULL, value = "")
     
@@ -234,10 +277,17 @@ shinyServer(function(input, output, session) {
   # generating strategy output
   output$strategy_text <- renderTable({ Strategy() })
   
-  
+  # function that visualizes the current table results if it's stored in GLobal Environment
+  loadData <- function() {
+    if (exists("responses")) {
+      responses
+    }
+  }
   # writing logs of the records
   output$mytable <- DT::renderDataTable({
-    DF()
+    
+    input$subm_rec
+    loadData()
   })
   
 })

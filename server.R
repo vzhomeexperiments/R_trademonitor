@@ -17,15 +17,21 @@ library(xlsx)
 
 
 # specifying the path to the 4x terminals used into the dataframe
-Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - Terminal1/MQL4/Files",
-                                               "C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files",
-                                               "C:/Program Files (x86)/FxPro - Terminal3/MQL4/Files",
-                                               "C:/Program Files (x86)/FxPro - Terminal4/MQL4/Files",
-                                               "C:/Program Files (x86)/FxPro - Terminal5/MQL4/Files"),
+Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - Terminal1/MQL4/Files/",
+                                               "C:/Program Files (x86)/FxPro - Terminal2/MQL4/Files/",
+                                               "C:/Program Files (x86)/FxPro - Terminal3/MQL4/Files/",
+                                               "C:/Program Files (x86)/FxPro - Terminal4/MQL4/Files/",
+                                               "C:/Program Files (x86)/FxPro - Terminal5/MQL4/Files/"),
                         stringsAsFactors = F)
 
+# -------------------------------
 # load prices of 28 currencies
+if(!file.exists(file.path(Terminals[2,2], "AI_CP15.csv"))){
+  file.copy("AI_CP15.csv", file.path(Terminals[2,2], "AI_CP15.csv"))
+}
 prices <- read_csv(file.path(Terminals[2,2], "AI_CP15.csv"), col_names = F)
+# # No DSS? Use this variable below
+# prices <- read_csv("AI_CP15.csv", col_names = F)
 prices$X1 <- ymd_hms(prices$X1)
 
 # Vector of currency pairs
@@ -36,10 +42,11 @@ Pairs = c("Date", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "U
 
 # Rename the column?
 names(prices) <- Pairs
-
+# -------------------------------
+# Load tables with trading strategies
 Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
 Strategies$ID <- as.factor(Strategies$ID)
-
+# -------------------------------
 # function that write data to csv file 
 storeData <- function(data, fileName) {
   
@@ -52,7 +59,6 @@ storeData <- function(data, fileName) {
     file = fileName, 
     row.names = FALSE, quote = FALSE, append = TRUE, col.names = FALSE
   )
-  
 }
 
 # ============================================================
@@ -65,8 +71,10 @@ shinyServer(function(input, output, session) {
   
   #---------------------  
   # have a reactive value of terminal number selected
-  file_path <- reactive({ file_path <- paste(Terminals[input$TermNum, 2], "/", "OrdersResultsT", input$TermNum,".csv", sep = "") })
-  #Debugging: file_path <- paste(Terminals[1, 2], "/", "OrdersResultsT", 1,".csv", sep = "")
+  file_path <- reactive({ file_path <- paste0(Terminals[input$TermNum, 2], "OrdersResultsT", input$TermNum,".csv") })
+  #Debugging: file_path <- paste(Terminals[1, 2] "OrdersResultsT", 1,".csv", sep = "")
+  # # No DSS? Uncomment and use this variable instead:
+  # file_path <- reactive({ file_path <- paste0("OrdersResultsT", input$TermNum,".csv") })
   
   #---------------------
   # have a reactive value of the magic system selected

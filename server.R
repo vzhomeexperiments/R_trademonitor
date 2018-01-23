@@ -26,12 +26,13 @@ Terminals <- data.frame(id = 1:5, TermPath = c("C:/Program Files (x86)/FxPro - T
 
 # -------------------------------
 # load prices of 28 currencies
+# if file is not found in the terminal sandbox, retrieve it from working directory
 if(!file.exists(file.path(Terminals[2,2], "AI_CP15.csv"))){
-  file.copy("AI_CP15.csv", file.path(Terminals[2,2], "AI_CP15.csv"))
-}
-prices <- read_csv(file.path(Terminals[2,2], "AI_CP15.csv"), col_names = F)
-# # No DSS? Use this variable below
-# prices <- read_csv("AI_CP15.csv", col_names = F)
+  # retrieve the price data from working directory      
+  prices <- read_csv("AI_CP15.csv", col_names = F)
+  # otherwise get the fresh copy from the terminal sandbox
+} else { prices <- read_csv(file.path(Terminals[2,2], "AI_CP15.csv"), col_names = F)}
+# make the price having proper format
 prices$X1 <- ymd_hms(prices$X1)
 
 # Vector of currency pairs

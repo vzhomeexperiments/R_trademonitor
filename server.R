@@ -40,7 +40,6 @@ Pairs = c("Date", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "U
           "EURGBP", "EURJPY", "EURCHF", "EURNZD", "EURCAD", "EURAUD", "GBPAUD",
           "GBPCAD", "GBPCHF", "GBPJPY", "GBPNZD", "AUDCAD", "AUDCHF", "AUDJPY",
           "AUDNZD", "CADJPY", "CHFJPY", "NZDJPY", "NZDCAD", "NZDCHF", "CADCHF")   
-
 # Rename the column?
 names(prices) <- Pairs
 # -------------------------------
@@ -140,12 +139,7 @@ shinyServer(function(input, output, session) {
   #=============================================================  
   # import the summary statistics on the beginning of the app, call the statistics on refresh button call
   observeEvent(input$Refresh, {
-    
-    # DF <- read_csv(file = file_path(), col_names = F)
-    # DF$X3 <- ymd_hms(DF$X3)
-    # DF$X4 <- ymd_hms(DF$X4)
-    # DF <- DF %>% arrange(X1)
-    
+
     # update the magic numbers selection
     updateSelectInput(session, inputId = "MagicNum", label = NULL, choices = unique(DF_Stats()$X1), selected = NULL)
     
@@ -171,7 +165,7 @@ shinyServer(function(input, output, session) {
       }
     }
     
-    # test run -- save data to global directory
+    # save data to global directory
     saveDataGlobal(DF())
     
     #write to file (append)
@@ -202,12 +196,7 @@ shinyServer(function(input, output, session) {
   
   # -------------------------------------------
   # table with statistic of the system, P/L and Number of trades
-  output$statistics <- renderTable({
-
-    DF_Stats() %>%
-      filter(X1 == system_analysed()) 
-    
-  })
+  output$statistics <- renderTable({  DF_Stats() %>%  filter(X1 == system_analysed())   })
   
   # -------------------------------------------
   # table with statistic of the system, Sum PnL and N trades

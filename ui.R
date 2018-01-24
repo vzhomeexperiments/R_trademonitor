@@ -23,29 +23,24 @@ dashboardPage(
       sliderInput(inputId = "nTrades", label = "Select Orders number greater than...", value = c(0, 1000),min = 0, max = 1000)
   ),
   dashboardBody(
-        
       mainPanel(
-        
         # Elements of the Dashboard: header and tabset panel
         headerPanel("Trading Systems Graphical performance overview"),
-        
         tabsetPanel(
             # Default chart and statistics summary visualizing the overall performance of the systems
-            tabPanel("All Systems Plot", tableOutput('summary'),
-                     plotOutput('plot1')),
+            tabPanel("All Systems Plot", tableOutput('summary'), plotOutput('plot1')),
             # table and graph visualizing statistical performance and time-series graph of single system
             tabPanel("Basic Statistics and Graph", 
                      checkboxInput(inputId = "StatErr", label = "Add Statistical Smoother?", value = FALSE, width = NULL),
-                      fluidRow(column(3, tableOutput('statistics')),
-                               column(4, textAreaInput("caption", "Notes", "", width = '100%')),
-                               column(1, actionButton("subm_rec", label = "Go!", icon = icon("check")))),
-                                
+                     fluidRow(column(3, tableOutput('statistics')),
+                              column(4, textAreaInput("caption", "Notes", "", width = '100%')),
+                              column(1, actionButton("subm_rec", label = "Go!", icon = icon("check")))),
                      tableOutput("strategy_text"),
                      plotOutput("plot2"),
                      plotOutput("plot3")
                      
                      ),
-            # datatable with records of thoughts... write persistently to excel file, records should be visualized by date
+            # datatable with records of thoughts... write persistently to csv file, records should be visualized by date
             tabPanel("Log", DT::dataTableOutput("mytable"))
           )  
       )

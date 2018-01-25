@@ -72,7 +72,7 @@ shinyServer(function(input, output, session) {
   #---------------------  
   # have a reactive value of terminal number selected
   file_path <- reactive({ file_path <- paste0(Terminals[input$TermNum, 2], "OrdersResultsT", input$TermNum,".csv") })
-  #Debugging: file_path <- paste(Terminals[1, 2] "OrdersResultsT", 1,".csv", sep = "")
+  #Debugging: file_path <- paste0(Terminals[1, 2], "OrdersResultsT", 1,".csv")
   # # No DSS? Uncomment and use this variable instead:
   # file_path <- reactive({ file_path <- paste0("OrdersResultsT", input$TermNum,".csv") })
   
@@ -185,7 +185,7 @@ shinyServer(function(input, output, session) {
   output$plot1 <- renderPlot({
 
     DF_Stats() %>% 
-      
+      #DF_Stats %>% #debugging
       ggplot(aes(x = PnL, y = as.factor(X1), size = NumTrades)) + geom_point()+ 
       ggtitle(label = "Plot indicating which systems are profitable", 
               subtitle = "Size of the point represent number of trades completed") +

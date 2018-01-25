@@ -169,7 +169,7 @@ shinyServer(function(input, output, session) {
     saveDataGlobal(DF())
     
     #write to file (append)
-    storeData(responses, "responses.csv")
+    storeData(responses, "responses.csv") 
     #eraze what was written
     updateTextAreaInput(session, inputId = "caption", label = NULL, value = "")
     
@@ -245,17 +245,16 @@ shinyServer(function(input, output, session) {
       select(X6) %>% head(1)
     Currency <- DF2$X6
     
-    
+    # extract relevant price information...
     DF_Date <- subset(prices, select = Date)
     DF_Price <- subset(prices, select = Currency) %>% bind_cols(DF_Date)
     
+    # rename otherwise ggplot did not work
     names(DF_Price) <- c("X1", "Date")
     
+    # bring the plot...
     DF_Price %>% filter(Date > as.POSIXct(FirstTrade)) %>%
       select(Date, X1) %>% 
-      # plot
-      # bring the plot...
-      #plot()
       ggplot(aes(Date, X1, col = "red")) + geom_line()
     
   })

@@ -6,6 +6,7 @@
 
 library(shinydashboard)
 library(tidyverse)
+library(magrittr)
 library(lubridate)
 library(readxl)
 library(DT)
@@ -108,8 +109,9 @@ shinyServer(function(input, output, session) {
                         summarise(PnL = sum(X5),
                                   NumTrades = n(),
                                   PrFact = profit_factor(X5)) %>% 
-                           right_join(DF_Pairs, by = 'X1') %>%
-                          arrange(X1) %>% 
+                          #join column with currency pairs
+                          right_join(DF_Pairs, by = 'X1') %>%
+                        arrange(X1) %>% 
                         filter(NumTrades > input$nTrades[1], NumTrades < input$nTrades[2]) %>% 
                         filter(PnL > input$filter[1], PnL < input$filter[2])   
                       })
@@ -140,12 +142,11 @@ shinyServer(function(input, output, session) {
   
   #---------------------
   # create dynamic value of currency pair for the logging purposes
-  pair_analysed <- reactive({ 
-    
-    DF1 <- DF_Stats() %>% filter(X1 == system_analysed()) %>% select(X6)  
-    pair_analysed <- DF1$X6
-    
-    })
+  pair_analysed <- reactive({ DF_Stats() %>% filter(X1 == system_analysed()) %$% X6 })
+  
+  #---------------------
+  # create dynamic value of profit factor for the logging purposes
+  prof_fact <- reactive({ DF_Stats() %>% filter(X1 == system_analysed()) %$% PrFact })
   
   
   #---------------------
@@ -155,6 +156,7 @@ shinyServer(function(input, output, session) {
     DF <- data.frame(ID = strategy_analysed(),
                      Pair = pair_analysed(),
                      Date = as.character(Sys.Date()),
+                     PrFact = prof_fact(),
                      Log = as.character(input$caption))
     
     })
@@ -171,7 +173,7 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, inputId = "MagicNum", label = NULL, choices = unique(DF_Stats()$X1), selected = NULL)
     
       #try to read from file responses.csv first for the information that is already available
-    DF <- try(read_csv(file = "responses.csv", col_types = "cccc"),silent = T)
+    DF <- try(read_csv(file = "responses.csv", col_types = "ccccc"),silent = T)
       
       if (class(DF)[3] == "data.frame") {    # get data from file to the responses
         responses <<- DF

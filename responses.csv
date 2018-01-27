@@ -1,3 +1,4 @@
-ID,Pair,Date,Log
-8118101,USDCHF,2018-01-18,something
-18,USDCHF,2018-01-27,l;km;lm,;lm,
+ID,Pair,Date,PrFact,Log
+18,USDCHF,2018-01-18,0.1,something
+18,USDCHF,2018-01-27,0.5,some more
+18,USDCHF,2018-01-27,0.680195841210139,uhgdhj

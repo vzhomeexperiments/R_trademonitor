@@ -88,14 +88,22 @@ shinyServer(function(input, output, session) {
   # cleaning data and creating relevant statistics
   DF_Stats <- reactive({ 
                         DF_Stats <- read_csv(file = file_path(), col_names = F)
-                        #DF_Stats <- read_csv(file = file_path, col_names = F)
+                        #DF_Stats <- read_csv(file = file_path, col_names = F) #debugging
                         DF_Stats$X3 <- ymd_hms(DF_Stats$X3)
                         DF_Stats$X4 <- ymd_hms(DF_Stats$X4)
+                        
+                        # extracting table with corresponding pairs
+                        DF_Pairs <- DF_Stats %>% 
+                          filter(X3 > as.POSIXct(input$filterDate)) %>% 
+                          distinct(X1, X6)
+                        
+                        # sumarizing table
                         DF_Stats <- DF_Stats %>%
                         filter(X3 > as.POSIXct(input$filterDate)) %>% 
                         group_by(X1) %>%
                         summarise(PnL = sum(X5),
                                   NumTrades = n()) %>% 
+                           right_join(DF_Pairs, by = 'X1') %>%
                           arrange(X1) %>% 
                         filter(NumTrades > input$nTrades[1], NumTrades < input$nTrades[2]) %>% 
                         filter(PnL > input$filter[1], PnL < input$filter[2])   
@@ -125,10 +133,23 @@ shinyServer(function(input, output, session) {
   Strategy <- reactive({ Strategies %>% filter(ID == strategy_analysed()) })
   
   #---------------------
+  # create dynamic value of currency pair for the logging purposes
+  pair_analysed <- reactive({ 
+    
+    DF1 <- DF_Stats() %>% filter(X1 == system_analysed()) %>% select(X6)  
+    pair_analysed <- DF1$X6
+    
+    })
+  
+  
+  #---------------------
   # store record as reactive value
   DF <- reactive({ 
     
-    DF <- data.frame(ID = strategy_analysed(), Date = as.character(Sys.Date()), Log = as.character(input$caption))
+    DF <- data.frame(ID = strategy_analysed(),
+                     Pair = pair_analysed(),
+                     Date = as.character(Sys.Date()),
+                     Log = as.character(input$caption))
     
     })
   
@@ -144,7 +165,7 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, inputId = "MagicNum", label = NULL, choices = unique(DF_Stats()$X1), selected = NULL)
     
       #try to read from file responses.csv first for the information that is already available
-    DF <- try(read_csv(file = "responses.csv", col_types = "ccc"),silent = T)
+    DF <- try(read_csv(file = "responses.csv", col_types = "cccc"),silent = T)
       
       if (class(DF)[3] == "data.frame") {    # get data from file to the responses
         responses <<- DF
@@ -185,8 +206,8 @@ shinyServer(function(input, output, session) {
   output$plot1 <- renderPlot({
 
     DF_Stats() %>% 
-      #DF_Stats %>% #debugging
-      ggplot(aes(x = PnL, y = as.factor(X1), size = NumTrades)) + geom_point()+ 
+      #DF_Stats1 %>% #debugging
+      ggplot(aes(x = PnL, y = as.factor(X1), size = NumTrades, col = as.factor(X6))) + geom_point()+ 
       ggtitle(label = "Plot indicating which systems are profitable", 
               subtitle = "Size of the point represent number of trades completed") +
       geom_vline(xintercept=0, linetype="dashed", color = "green") +

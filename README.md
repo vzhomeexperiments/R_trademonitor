@@ -14,4 +14,4 @@ To help with that it's necessary to monitor performance of the systems
 
 # learn how to apply this repository
 
-https://www.udemy.com/draft/1482376/?couponCode=LAZYTRADE3-20
+https://www.udemy.com/your-trading-journal/?couponCode=LAZYTRADE-GIT

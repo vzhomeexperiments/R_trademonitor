@@ -7,7 +7,9 @@
 # x - column vector with profit or loss of the orders for one system
 #     function should calculate profit factor for this vector and return one value also as vector
 # x <- read_rds('test_data.rds') %>% select(X5) %$% X5 
-#
+# x <- read_rds('test_data.rds') %>% filter(X5 > 0) %>% select(X5) %$% X5 
+# x <- read_rds('test_data.rds') %>% filter(X5 < 0) %>% select(X5) %$% X5 
+
 profit_factor <- function(x){
   require(magrittr)
   x <- x %>% as.data.frame()
@@ -30,4 +32,5 @@ profit_factor <- function(x){
     
   }
   
-  
+# test this function
+# profit_factor(x)

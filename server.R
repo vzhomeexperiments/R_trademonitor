@@ -61,6 +61,10 @@ storeData <- function(data, fileName) {
   )
 }
 
+# -------------------------------
+# function that calculates profit factor from the vector
+source("profit_factor.R")
+
 # ============================================================
 
 shinyServer(function(input, output, session) {
@@ -85,7 +89,7 @@ shinyServer(function(input, output, session) {
   strategy_analysed <- reactive({ system_analysed() %>% substr(3,4) })
   
   #---------------------
-  # cleaning data and creating relevant statistics
+  # cleaning data and creating relevant statistics also with profit factor
   DF_Stats <- reactive({ 
                         DF_Stats <- read_csv(file = file_path(), col_names = F)
                         #DF_Stats <- read_csv(file = file_path, col_names = F) #debugging
@@ -102,7 +106,8 @@ shinyServer(function(input, output, session) {
                         filter(X3 > as.POSIXct(input$filterDate)) %>% 
                         group_by(X1) %>%
                         summarise(PnL = sum(X5),
-                                  NumTrades = n()) %>% 
+                                  NumTrades = n(),
+                                  PrFact = profit_factor(X5)) %>% 
                            right_join(DF_Pairs, by = 'X1') %>%
                           arrange(X1) %>% 
                         filter(NumTrades > input$nTrades[1], NumTrades < input$nTrades[2]) %>% 
@@ -127,6 +132,7 @@ shinyServer(function(input, output, session) {
       summarise(TotPnL = sum(PnL),
                 NumTrades = sum(NumTrades))
   })
+  
   
   #---------------------
   # make strategy table (to derive it from magic number)

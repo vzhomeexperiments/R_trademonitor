@@ -1,7 +1,7 @@
-
 # (C) 2018 Vladimir Zhbanko 
 # Shiny app to monitor statistics of the trading systems
 # Course Lazy Trading Part 3: Set up your automated Trading Journal
+# https://www.udemy.com/your-trading-journal/?couponCode=LAZYTRADE-GIT
 
 
 library(shinydashboard)

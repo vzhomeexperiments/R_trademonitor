@@ -77,7 +77,7 @@ shinyServer(function(input, output, session) {
   #---------------------  
   # have a reactive value of terminal number selected
   file_path <- reactive({ file_path <- paste0(Terminals[input$TermNum, 2], "OrdersResultsT", input$TermNum,".csv") })
-  #Debugging: file_path <- paste0(Terminals[1, 2], "OrdersResultsT", 1,".csv")
+  #Debugging: file_path <- paste0(Terminals[4, 2], "OrdersResultsT", 4,".csv")
   # # No DSS? Uncomment and use this variable instead:
   # file_path <- reactive({ file_path <- paste0("OrdersResultsT", input$TermNum,".csv") })
   
@@ -96,6 +96,8 @@ shinyServer(function(input, output, session) {
                         #DF_Stats <- read_csv(file = file_path, col_names = F) #debugging
                         DF_Stats$X3 <- ymd_hms(DF_Stats$X3)
                         DF_Stats$X4 <- ymd_hms(DF_Stats$X4)
+                        # removes duplicates
+                        DF_Stats <- unique(DF_Stats)
                         
                         # extracting table with corresponding pairs
                         DF_Pairs <- DF_Stats %>% 

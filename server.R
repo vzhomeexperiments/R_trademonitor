@@ -125,6 +125,7 @@ shinyServer(function(input, output, session) {
     #DF_Stats_PnL <- read_csv(file = file_path, col_names = F)
     DF_Stats_PnL$X3 <- ymd_hms(DF_Stats_PnL$X3)
     DF_Stats_PnL$X4 <- ymd_hms(DF_Stats_PnL$X4)
+    DF_Stats_PnL <- unique(DF_Stats_PnL)
     DF_Stats_PnL <- DF_Stats_PnL %>%
       filter(X3 > as.POSIXct(input$filterDate)) %>% 
       group_by(X1) %>%

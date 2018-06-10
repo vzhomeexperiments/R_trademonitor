@@ -3,3 +3,4 @@ ID,Pair,Date,PrFact,Log
 18,GBPUSD,2018-01-29,1.68091360845807,This system is working much better!
 18,AUDUSD,2018-02-16,131700,good performance in bullish market
 18,GBPJPY,2018-02-16,0,worse system - ranging market
+37,USDCHF,2018-05-22,0.57295965359266,Changing exit rules. When predicted expectation will be less then trigger close the order faster

@@ -11,7 +11,8 @@ library(lubridate)
 library(readxl)
 library(DT)
 library(xlsx)
-
+# function that calculates profit factor from the vector
+source("profit_factor.R")
 #=============================================================
 #========= FUNCTIONS AND VARIABLES============================
 #=============================================================
@@ -63,8 +64,7 @@ storeData <- function(data, fileName) {
 }
 
 # -------------------------------
-# function that calculates profit factor from the vector
-source("profit_factor.R")
+
 
 # ============================================================
 

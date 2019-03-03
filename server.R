@@ -247,7 +247,7 @@ shinyServer(function(input, output, session) {
       # filter by date, this allows to see trends better!!!
       filter(X4 > as.POSIXct(input$filterDate)) %>% 
       # bring the plot...
-      ggplot(aes(x = X4, y = X5, col = as.factor(X7), shape = as.factor(X6))) + geom_point()+ 
+      ggplot(aes(x = X4, y = X5, col = as.factor(X6), shape = as.factor(X7))) + geom_point()+ 
       # this is just a line separating profit and loss :)
       geom_hline(yintercept=0, linetype="dashed", color = "red")+
       # adding a simple line summarising points, user can select if apply stat.error filter
@@ -260,6 +260,8 @@ shinyServer(function(input, output, session) {
   output$plot3 <- renderPlot({
     
     DF <- read_csv(file = file_path(), col_names = F)
+    #file_path <- "OrdersResultsT3.csv"
+    #DF <- read_csv(file_path, col_names = F)
     DF$X3 <- ymd_hms(DF$X3)
     DF$X4 <- ymd_hms(DF$X4)
     
@@ -267,27 +269,30 @@ shinyServer(function(input, output, session) {
     DF1 <- DF %>% 
       # only show one system
       filter(X1 == system_analysed()) %>% 
-      select(X4) %>% arrange() %>% head(1)
-    FirstTrade <- DF1$X4
+      #filter(X1 == "8132329") %>% 
+      select(X4) %>% arrange() 
+    FirstTrade <- DF1 %>% head(1) %$% X4
+    LastTrade <- DF1 %>% tail(1) %$% X4
     
-    # find the currency which is in trade
+    # find the currency(ies) which is(are) in trade
     DF2 <- DF %>% 
       # only show one system
       filter(X1 == system_analysed()) %>% 
-      select(X6) %>% head(1)
-    Currency <- DF2$X6
+      #filter(X1 == "8132329") %>% 
+      select(X6) %>% unique()
+    # extract a vector of unique currencies without duplicates (see usage of verb unique() in line above)
+    Currency <- DF2 %$% X6
     
     # extract relevant price information...
-    DF_Date <- subset(prices, select = Date)
-    DF_Price <- subset(prices, select = Currency) %>% bind_cols(DF_Date)
-    
-    # rename otherwise ggplot did not work
-    names(DF_Price) <- c("X1", "Date")
+    DF_Price <- prices %>% 
+      filter(Date > FirstTrade) %>%
+      filter(Date < LastTrade) %>% 
+      select(Date, Currency) # select columns with desired currency pairs
+    DF_1 <- DF_Price %>% gather(Pair_Name, Pair_Value, -1)
     
     # bring the plot...
-    DF_Price %>% filter(Date > as.POSIXct(FirstTrade)) %>%
-      select(Date, X1) %>% 
-      ggplot(aes(Date, X1, col = "red")) + geom_line()
+    DF_1 %>% 
+      ggplot(aes(Date, Pair_Value, col = Pair_Name)) + geom_line() + facet_grid(Pair_Name ~ .,scales = "free_y")
     
   })
   

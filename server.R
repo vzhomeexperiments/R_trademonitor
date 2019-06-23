@@ -12,7 +12,9 @@ library(readxl)
 library(DT)
 library(xlsx)
 # function that calculates profit factor from the vector
-source("profit_factor.R")
+#devtools::install_github("vzhomeexperiments/lazytrade")
+library(lazytrade)
+#source("profit_factor.R")
 #=============================================================
 #========= FUNCTIONS AND VARIABLES============================
 #=============================================================

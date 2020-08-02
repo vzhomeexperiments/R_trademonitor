@@ -1,0 +1,5 @@
+﻿ID,Strategy_Name,DateTime,MagicNumber,Pair,Base,EconPowBase,SwapLong,Quote,EconPowQuote,SwapShort,MacroRisk,Direction2Use,Comments,Decision
+42,FALCON_D,11/10/2019,9142303,EURUSD,EUR,Low,-9.1,USD,Med,3.7,Low,SELL,Pair is currently heading down after retracement,Active
+42,FALCON_D,11/10/2019,9142304,GPBUSD,GBP,Low,-6,USD,Med,-0.2,Med,SELL,Pair is currently heading down after retracement,Active
+42,FALCON_D,11/10/2019,9142305,USDCHF,USD,Med,3.8,CHF,Med,-9,Low,BUY,Pair is ranging with positive buy swap,Active
+42,FALCON_D,11/10/2019,9142306,AUDUSD,AUD,Low,-4,USD,Med,-1,Low,SELL,Pair seems to head down after retracement,Active

@@ -1,0 +1,4 @@
+﻿ID,Strategy_Name,Basic_Principle,Entry_Rule,Exit_Rule,Market_Ineficiency
+32,FALCON_A,Trade Eucledian kNN. Entry using cross_macd and calculated probabilities to enter using kNN machine learning,When MACD indicator changing direction,When MACD indicator changing direction,Ranging market
+34,FALCON_C,Recognized market with AI. Keep direction as bullish or bearish. When ranging calm do not trade.,Moving Average cross over system. Aided by AI guess on Market Status,Keltner channels moving in unfavorable direction,Trending Market
+18,FALCON_B,Trading Template. Main goal is to generate trades and use them for Trading Journal,Moving Average cross over system,Keltner channels moving in unfavorable direction,Trending Market

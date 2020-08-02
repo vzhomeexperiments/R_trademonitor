@@ -5,14 +5,16 @@
 
 
 library(shinydashboard)
-library(tidyverse)
+#library(tidyverse)
 library(magrittr)
+library(readr)
 library(lubridate)
 library(readxl)
 library(DT)
-library(xlsx)
+#library(xlsx)
 # function that calculates profit factor from the vector
-source("profit_factor.R")
+#source("profit_factor.R")
+library(lazytrade)
 #=============================================================
 #========= FUNCTIONS AND VARIABLES============================
 #=============================================================
@@ -46,7 +48,7 @@ Pairs = c("Date", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "U
 names(prices) <- Pairs
 # -------------------------------
 # Load tables with trading strategies
-Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
+Strategies <- read_csv("Strategies.csv" ,col_names = TRUE)
 Strategies$ID <- as.factor(Strategies$ID)
 # -------------------------------
 # function that write data to csv file 

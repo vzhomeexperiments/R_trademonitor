@@ -5,11 +5,12 @@
 
 
 library(shinydashboard)
-library(tidyverse)
+library(readr)
+library(lazytrade)
 library(lubridate)
 library(readxl)
 library(DT)
-library(xlsx)
+
 
 #=============================================================
 #========= FUNCTIONS AND VARIABLES============================
@@ -44,7 +45,7 @@ Pairs = c("Date", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "U
 names(prices) <- Pairs
 # -------------------------------
 # Load tables with trading strategies
-Strategies <- read_excel("Strategies.xlsx",sheet = 1,col_names = TRUE)
+Strategies <- read_csv("Strategies.csv")
 Strategies$ID <- as.factor(Strategies$ID)
 # -------------------------------
 # function that write data to csv file 

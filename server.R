@@ -7,9 +7,11 @@
 library(shinydashboard)
 #library(tidyverse)
 library(magrittr)
+library(dplyr)
+library(ggplot2)
 library(readr)
 library(lubridate)
-library(readxl)
+#library(readxl)
 library(DT)
 #library(xlsx)
 # function that calculates profit factor from the vector
@@ -86,11 +88,11 @@ shinyServer(function(input, output, session) {
   #---------------------
   # have a reactive value of the magic system selected
   system_analysed <- reactive({ system_analysed <- input$MagicNum })
-  
+  #Debugging: system_analysed <- 8118404
   #---------------------
   # have a reactive value of the strategy type
   strategy_analysed <- reactive({ system_analysed() %>% substr(3,4) })
-  
+  #Debugging: strategy_analysed <- 8118404 %>% substr(3,4)
   #---------------------
   # cleaning data and creating relevant statistics also with profit factor
   DF_Stats <- reactive({ 
@@ -108,7 +110,7 @@ shinyServer(function(input, output, session) {
                         
                         # sumarizing table
                         DF_Stats <- DF_Stats %>%
-                        filter(X3 > as.POSIXct(input$filterDate)) %>% 
+                        #filter(X3 > as.POSIXct(input$filterDate)) %>% 
                         group_by(X1) %>%
                         summarise(PnL = sum(X5),
                                   NumTrades = n(),

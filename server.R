@@ -8,7 +8,8 @@ library(shinydashboard)
 library(readr)
 library(lazytrade)
 library(lubridate)
-library(readxl)
+library(dplyr)
+library(ggplot2)
 library(DT)
 
 

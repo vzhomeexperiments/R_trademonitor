@@ -110,7 +110,7 @@ shinyServer(function(input, output, session) {
                         
                         # sumarizing table
                         DF_Stats <- DF_Stats %>%
-                        filter(X3 > as.POSIXct(input$filterDate)) %>% 
+                        #filter(X3 > as.POSIXct(input$filterDate)) %>% 
                         group_by(X1) %>%
                         summarise(PnL = sum(X5),
                                   NumTrades = n(),

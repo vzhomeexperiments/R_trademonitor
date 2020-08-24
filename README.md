@@ -1,6 +1,6 @@
 # trademonitor
 *What is it for?
-Monitoring trades. Trading Journal, Performance measurments, Manual and automated decision making
+Monitoring trades. Trading Journal, Performance measurements, Manual and automated decision making
 Trying to simplify trading by helping monitoring it with ShinyApp. 
 Separate script will be running on the local machine to evaluate if trading situation is appropriate or not
 
@@ -14,4 +14,4 @@ To help with that it's necessary to monitor performance of the systems
 
 # learn how to apply this repository
 
-https://www.udemy.com/your-trading-journal/?couponCode=LAZYTRADE-GIT
+https://www.udemy.com/course/your-trading-journal/?referralCode=26E0ADB09BB86E35969A

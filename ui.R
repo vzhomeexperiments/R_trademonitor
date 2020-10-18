@@ -1,10 +1,10 @@
 # Project to create easy to use Trading Journal adapted to personal use
 # Help to develop, demo-test Automated Trading Systems
 #
-# (C) 2018 Vladimir Zhbanko github: vzhomeexperiments/R_trademonitor
+# (C) 2018, 2020 Vladimir Zhbanko github: vzhomeexperiments/R_trademonitor
 # Course Lazy Trading Part 3: Set up your automated Trading Journal
 #
-# https://www.udemy.com/your-trading-journal/?couponCode=LAZYTRADE-GIT
+# https://www.udemy.com/course/your-trading-journal/?referralCode=26E0ADB09BB86E35969A
 #
 # Run this app from R-Studio or use this link:
 # https://stackoverflow.com/questions/18606665/run-web-applications-without-opening-r-studio

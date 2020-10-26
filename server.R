@@ -112,7 +112,7 @@ shinyServer(function(input, output, session) {
                         group_by(X1) %>%
                         summarise(PnL = sum(X5),
                                   NumTrades = n(),
-                                  PrFact = profit_factor(X5)) %>% 
+                                  PrFact = lazytrade::util_profit_factor(X5)) %>% 
                           #join column with currency pairs
                           right_join(DF_Pairs, by = 'X1') %>%
                         arrange(X1) %>% 

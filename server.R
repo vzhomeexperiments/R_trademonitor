@@ -1,7 +1,6 @@
-# (C) 2018 Vladimir Zhbanko 
+# (C) 2018, 2020 Vladimir Zhbanko 
 # Shiny app to monitor statistics of the trading systems
 # Course Lazy Trading Part 3: Set up your automated Trading Journal
-# https://www.udemy.com/your-trading-journal/?couponCode=LAZYTRADE-GIT
 
 
 library(shinydashboard)
@@ -11,8 +10,7 @@ library(lubridate)
 library(readxl)
 library(DT)
 library(xlsx)
-# function that calculates profit factor from the vector
-source("profit_factor.R")
+library(lazytrade)
 #=============================================================
 #========= FUNCTIONS AND VARIABLES============================
 #=============================================================
@@ -110,7 +108,7 @@ shinyServer(function(input, output, session) {
                         group_by(X1) %>%
                         summarise(PnL = sum(X5),
                                   NumTrades = n(),
-                                  PrFact = profit_factor(X5)) %>% 
+                                  PrFact = util_profit_factor(X5)) %>% 
                           #join column with currency pairs
                           right_join(DF_Pairs, by = 'X1') %>%
                         arrange(X1) %>% 
